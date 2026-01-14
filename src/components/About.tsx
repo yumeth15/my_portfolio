@@ -6,9 +6,7 @@ const About = () => {
       <div className="about-me">
         <h3 className="title">About Me</h3>
         <p className="para">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quis
-          dolores numquam iusto Ratione earum ducimus autem id iure pariatur
-          dolorum quae maiores.
+          I am a Software Engineering undergraduate skilled in Flutter, React, Supabase, and SQL, with experience building secure and scalable full-stack mobile applications.
         </p>
       </div>
     </div>

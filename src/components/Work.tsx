@@ -28,7 +28,7 @@ const Work = () => {
     scrollTrigger: {
       trigger: ".work-section",
       start: "top top",
-      end: `+=${translateX}`, // Use actual scroll width
+      end: `+=${translateX}`, 
       scrub: true,
       pin: true,
       id: "work",
@@ -40,7 +40,6 @@ const Work = () => {
     ease: "none",
   });
 
-  // Clean up (optional, good practice)
   return () => {
     timeline.kill();
     ScrollTrigger.getById("work")?.kill();
@@ -50,27 +49,31 @@ const Work = () => {
     <div className="work-section" id="work">
       <div className="work-container section-container">
         <h2>
-          My <span>Work</span>
+          My <span>Projects</span>
         </h2>
         <div className="work-flex">
-          {[...Array(6)].map((_value, index) => (
-            <div className="work-box" key={index}>
+          {[
+            { id: 1, title: "Career Buddy", category: "Mobile App", tools: "Flutter,Dart,API,Supabase", image: "/images/careerbuddy.png"},
+            { id: 2, title: "Weather App", category: "Website", tools: "React,API,CSS", image: "/images/weather.png" },
+            { id: 3, title: "Travel Website", category: "Website", tools: "React,Supabase", image: "/images/travel.jpg" },
+          ].map((project, index) => (
+            <div className="work-box" key={project.id}>
               <div className="work-info">
                 <div className="work-title">
                   <h3>0{index + 1}</h3>
 
                   <div>
-                    <h4>Project Name</h4>
-                    <p>Category</p>
+                    <h4>{project.title}</h4>
+                    <p>{project.category}</p>
                   </div>
                 </div>
                 <h4>Tools and features</h4>
-                <p>Javascript, TypeScript, React, Threejs</p>
+                <p>{project.tools}</p>
               </div>
-              <WorkImage image="/images/placeholder.webp" alt="" />
+              <WorkImage image={project.image} alt={project.title} />
             </div>
           ))}
-        </div>
+        </div> 
       </div>
     </div>
   );
