@@ -21,7 +21,10 @@ const Navbar = () => {
     });
 
     smoother.scrollTop(0);
-    smoother.paused(true);
+    // Do not pause the smoother on touch devices — pausing can cause a black/immobile screen on mobile.
+    if (!ScrollTrigger.isTouch) {
+      smoother.paused(true);
+    }
 
     let links = document.querySelectorAll(".header ul a");
     links.forEach((elem) => {

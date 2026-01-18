@@ -2,14 +2,26 @@ import gsap from "gsap";
 import { smoother } from "../Navbar";
 
 export function initialFX() {
-  document.body.style.overflowY = "auto";
-  smoother.paused(false);
-  document.getElementsByTagName("main")[0].classList.add("main-active");
-  gsap.to("body", {
-    backgroundColor: "#0b080c",
-    duration: 0.5,
-    delay: 1,
-  });
+  try {
+    document.body.style.overflowY = "auto";
+    if (smoother && typeof smoother.paused === "function") {
+      smoother.paused(false);
+    }
+    const mainEl = document.getElementsByTagName("main")[0];
+    if (mainEl) mainEl.classList.add("main-active");
+    gsap.to("body", {
+      backgroundColor: "#0b080c",
+      duration: 0.5,
+      delay: 1,
+    });
+  } catch (err) {
+    // If anything goes wrong during the initial effects, log it and continue so the UI doesn't remain stuck.
+    // eslint-disable-next-line no-console
+    console.error("initialFX error:", err);
+    document.body.style.overflowY = "auto";
+    const mainElFallback = document.getElementsByTagName("main")[0];
+    if (mainElFallback) mainElFallback.classList.add("main-active");
+  }
 
   var landingText = new SplitText(
     [".landing-info h3", ".landing-intro h2", ".landing-intro h1"],
