@@ -26,32 +26,42 @@ const setCharacter = (
         loader.load(
           blobUrl,
           async (gltf) => {
-            character = gltf.scene;
-            await renderer.compileAsync(character, camera, scene);
-            character.traverse((child: any) => {
-              if (child.isMesh) {
-                const mesh = child as THREE.Mesh;
-                child.castShadow = true;
-                child.receiveShadow = true;
-                mesh.frustumCulled = true;
-              }
-            });
-            resolve(gltf);
-            setCharTimeline(character, camera);
-            setAllTimeline();
-            character!.getObjectByName("footR")!.position.y = 3.36;
-            character!.getObjectByName("footL")!.position.y = 3.36;
-            dracoLoader.dispose();
+            try {
+              character = gltf.scene;
+              await renderer.compileAsync(character, camera, scene);
+              character.traverse((child: any) => {
+                if (child.isMesh) {
+                  const mesh = child as THREE.Mesh;
+                  child.castShadow = true;
+                  child.receiveShadow = true;
+                  mesh.frustumCulled = true;
+                }
+              });
+              resolve(gltf);
+              setCharTimeline(character, camera);
+              setAllTimeline();
+              const footR = character.getObjectByName("footR");
+              const footL = character.getObjectByName("footL");
+              if (footR) footR.position.y = 3.36;
+              if (footL) footL.position.y = 3.36;
+              dracoLoader.dispose();
+              URL.revokeObjectURL(blobUrl);
+            } catch (err) {
+              console.error("Error processing character:", err);
+              URL.revokeObjectURL(blobUrl);
+              reject(err);
+            }
           },
           undefined,
           (error) => {
             console.error("Error loading GLTF model:", error);
+            URL.revokeObjectURL(blobUrl);
             reject(error);
           }
         );
       } catch (err) {
+        console.error("Error decrypting character file:", err);
         reject(err);
-        console.error(err);
       }
     });
   };
